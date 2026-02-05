@@ -20,7 +20,7 @@ public class Employee {
     private String firstName;
     @Column(name = "sobre_nome", nullable = false)
     private String lastName;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id", nullable = false)
     private Address address;
 }
