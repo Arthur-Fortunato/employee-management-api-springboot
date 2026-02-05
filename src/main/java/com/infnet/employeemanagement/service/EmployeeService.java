@@ -34,11 +34,10 @@ public class EmployeeService {
         return employeeRepository.save(existentEmployee);
     }
 
-    public boolean deleteEmployee(Long id) {
+    public void deleteEmployee(Long id) {
         if (!employeeRepository.existsById(id)) {
-            return false;
+            return;
         }
         employeeRepository.deleteById(id);
-        return true;
     }
 }
