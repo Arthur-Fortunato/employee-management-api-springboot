@@ -1,6 +1,8 @@
 package com.infnet.employeemanagement.service;
 
 import com.infnet.employeemanagement.entity.Employee;
+import com.infnet.employeemanagement.exception.EmployeeNotFoundException;
+import com.infnet.employeemanagement.exception.GlobalExceptionHandler;
 import com.infnet.employeemanagement.repository.EmployeeRepository;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +21,7 @@ public class EmployeeService {
     }
 
     public Employee getEmployeeById(Long id) {
-        return employeeRepository.findById(id).orElseThrow(() -> new RuntimeException("Employee not found!"));
+        return employeeRepository.findById(id).orElseThrow(() -> new EmployeeNotFoundException());
     }
 
     public Employee createEmployee(Employee employee) {
@@ -27,7 +29,7 @@ public class EmployeeService {
     }
 
     public Employee updateEmployee(Long id, Employee employee) {
-        Employee existentEmployee = employeeRepository.findById(id).orElseThrow(() -> new RuntimeException("Employee not found!"));
+        Employee existentEmployee = employeeRepository.findById(id).orElseThrow(() -> new EmployeeNotFoundException());
         existentEmployee.setFirstName(employee.getFirstName());
         existentEmployee.setLastName(employee.getLastName());
         existentEmployee.setAddress(employee.getAddress());
@@ -36,7 +38,7 @@ public class EmployeeService {
 
     public void deleteEmployee(Long id) {
         if (!employeeRepository.existsById(id)) {
-            return;
+            throw new EmployeeNotFoundException();
         }
         employeeRepository.deleteById(id);
     }
