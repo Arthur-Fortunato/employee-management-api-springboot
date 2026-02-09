@@ -1,7 +1,9 @@
 package com.infnet.employeemanagement.controller;
 
+import com.infnet.employeemanagement.dto.EmployeeRequest;
 import com.infnet.employeemanagement.entity.Employee;
 import com.infnet.employeemanagement.service.EmployeeService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,8 +31,8 @@ public class EmployeeController {
     }
 
     @PostMapping
-    public ResponseEntity<Employee> createEmployee(@RequestBody Employee employee) {
-        Employee create = employeeService.createEmployee(employee);
+    public ResponseEntity<Employee> createEmployee(@Valid @RequestBody EmployeeRequest request) {
+        Employee create = employeeService.createEmployee(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(create);
     }
 
