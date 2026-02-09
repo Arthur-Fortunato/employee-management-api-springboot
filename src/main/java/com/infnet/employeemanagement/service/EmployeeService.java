@@ -5,7 +5,6 @@ import com.infnet.employeemanagement.entity.Address;
 import com.infnet.employeemanagement.entity.Employee;
 import com.infnet.employeemanagement.exception.EmployeeNotFoundException;
 import com.infnet.employeemanagement.repository.EmployeeRepository;
-import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,7 +25,7 @@ public class EmployeeService {
         return employeeRepository.findById(id).orElseThrow(() -> new EmployeeNotFoundException());
     }
 
-    public Employee createEmployee(@Valid EmployeeRequest request) {
+    public Employee createEmployee(EmployeeRequest request) {
         Address address = new Address();
         address.setStreet(request.getAddress().getStreet());
         address.setCity(request.getAddress().getCity());
@@ -40,18 +39,20 @@ public class EmployeeService {
         return employeeRepository.save(employee);
     }
 
-    public Employee updateEmployee(Long id, Employee employee) {
+    public Employee updateEmployee(Long id, EmployeeRequest request) {
         Employee existentEmployee = employeeRepository.findById(id).orElseThrow(() -> new EmployeeNotFoundException());
-        existentEmployee.setFirstName(employee.getFirstName());
-        existentEmployee.setLastName(employee.getLastName());
-        existentEmployee.setAddress(employee.getAddress());
+        existentEmployee.setFirstName(request.getFirstName());
+        existentEmployee.setLastName(request.getLastName());
+
+        existentEmployee.getAddress().setStreet(request.getAddress().getStreet());
+        existentEmployee.getAddress().setCity(request.getAddress().getCity());
+        existentEmployee.getAddress().setState(request.getAddress().getState());
+        existentEmployee.getAddress().setZipCode(request.getAddress().getZipCode());
         return employeeRepository.save(existentEmployee);
     }
 
     public void deleteEmployee(Long id) {
-        if (!employeeRepository.existsById(id)) {
-            throw new EmployeeNotFoundException();
-        }
+        if (!employeeRepository.existsById(id)) throw new EmployeeNotFoundException();
         employeeRepository.deleteById(id);
     }
 }
