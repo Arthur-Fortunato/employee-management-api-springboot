@@ -1,4 +1,4 @@
-package com.infnet.employeemanagement.dto;
+package com.infnet.employeemanagement.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
